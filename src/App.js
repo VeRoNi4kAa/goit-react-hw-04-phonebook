@@ -52,10 +52,10 @@ useEffect(() => {
     setFilter(e.target.value);
   };
 
-  const filterContacts = () =>
+  const filterContacts = () => {
     contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
+  )};
 
     return (
       <div>
