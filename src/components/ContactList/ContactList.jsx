@@ -4,7 +4,7 @@ import ContactListItem from "../ContactListItem";
 export default function ContactList({ filterContacts, deleteContact }) {
   return (
     <ul>
-      {filterContacts.map(({ id, name, number }) => (
+      {filterContacts(({ id, name, number }) => (
         <ContactListItem
           key={id}
           id={id}
@@ -18,6 +18,6 @@ export default function ContactList({ filterContacts, deleteContact }) {
 }
 
 ContactList.propTypes = {
-  filterContacts: PropTypes.array.isRequired,
+  filterContacts: PropTypes.func.isRequired,
   deleteContact: PropTypes.func.isRequired,
 };
