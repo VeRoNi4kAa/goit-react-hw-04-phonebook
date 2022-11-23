@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import {
@@ -13,23 +12,16 @@ const schema = yup.object().shape({
   number: yup.number().required().positive().integer(),
 });
 
-export default class ContactForm extends Component {
-  state = {
-    name: "",
-    number: "",
-  };
+export default function ContactForm ({onSubmit}) {
+ const handleSubmit = ({ name, number }, { resetForm }) => {
+  onSubmit(name, number);
+  resetForm()
+ };
 
-  handleSubmit = ({ name, number }, { resetForm }) => {
-    this.setState({ name: name, number: number });
-    this.props.onSubmit(this.state);
-    resetForm();
-  };
-
-  render() {
     return (
       <Formik
         initialValues={{ name: "", number: "" }}
-        onSubmit={this.handleSubmit}
+        onSubmit={handleSubmit}
         validationSchema={schema}
       >
         <FormContainer>
@@ -67,4 +59,4 @@ export default class ContactForm extends Component {
       </Formik>
     );
   }
-}
+
