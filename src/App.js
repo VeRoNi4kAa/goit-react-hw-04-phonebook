@@ -1,31 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { nanoid } from "nanoid";
-import ContactForm from "./components/ContactForm";
-import Filter from "./components/Filter";
-import ContactList from "./components/ContactList";
+import React, { useState, useEffect } from 'react';
+import { nanoid } from 'nanoid';
+import ContactForm from './components/ContactForm';
+import Filter from './components/Filter';
+import ContactList from './components/ContactList';
 
-function App () {
-const [contacts, setContacts] = useState([]);
-const [filter, setFilter] = useState('');
+function App() {
+  const [contacts, setContacts] = useState([]);
+  const [filter, setFilter] = useState('');
 
-useEffect(() => {
-  const contacts = localStorage.getItem('contacts');
-  const parsedContacts = JSON.parse(contacts);
-
-  if (contacts) setContacts(parsedContacts);
-  console.log(localStorage.getItem('contacts'));
-}, []);
-
-useEffect(() => {
-  localStorage.setItem('contacts', JSON.stringify(contacts));
-}, [contacts]);
-
-
- const deleteContact = event => {
+  const deleteContact = event => {
     event.preventDefault();
     const idDeletedContact = event.currentTarget.id;
     setContacts(prevState => {
-      console.log(prevState);
       return prevState.filter(contact => contact.id !== idDeletedContact);
     });
   };
@@ -52,23 +38,34 @@ useEffect(() => {
     setFilter(e.target.value);
   };
 
-  const filterContacts = () => 
+  const filterContacts = () =>
     contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
-
-    return (
-      <div>
-        <h1>Phonebook</h1>
-        <ContactForm onSubmit={addContact}></ContactForm>
-        <h2>Contacts</h2>
-        <Filter filter={filter} addFilter={addFilter} />
-        <ContactList
-          filterContacts={filterContacts}
-          deleteContact={deleteContact}
-        />
-      </div>
     );
-  }
+
+  useEffect(() => {
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+
+    if (contacts) setContacts(parsedContacts);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
+
+  return (
+    <div>
+      <h1>Phonebook</h1>
+      <ContactForm onSubmit={addContact} />
+      <h2>Contacts</h2>
+      <Filter filter={filter} addFilter={addFilter} />
+      <ContactList
+        filterContacts={filterContacts()}
+        deleteContact={deleteContact}
+      />
+    </div>
+  );
+}
 
 export default App;
